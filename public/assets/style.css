@@ -1,0 +1,9 @@
+h1{
+    color: green;
+   
+}
+.jumbotron{
+    /* background-image: url("./images/leek-3473642_1920.jpg"); */
+    height: 40%;;
+    font-weight: bold;
+}
