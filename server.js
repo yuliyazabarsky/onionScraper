@@ -17,6 +17,10 @@ app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/onionScraper", {
   useNewUrlParser: true
 });
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/onionScraper";
+
+// mongoose.connect(MONGODB_URI);
+
 
 var PORT = 8080;
 
@@ -38,7 +42,9 @@ var db = require("./models");
 //         res.json(err);
 //     })
 // });
-
+app.get("/", function(req, res) {
+    res.render("index");
+  });
 
 app.get("/scrape", function (req, res) {
   db.Article.deleteMany({})
@@ -55,12 +61,31 @@ app.get("/scrape", function (req, res) {
         $("h1").each(function (i, element) {
 
           var result = {};
-          result.title = $(this)
+          result.title = $(element)
             .children("a")
             .text();
-          result.link = $(this)
+          result.link = $(element)
             .children("a")
             .attr("href");
+          result.summary = $(element)
+            .children(".js_item-content")
+            .children(".entry-summary")
+            .children("p").text();
+    
+
+            ///////
+            // var results=[];
+            // link = $(element).children("header").children("h1").children("a").attr("href");
+            // title = $(element).children("header").children("h1").children("a").text();
+            // summary = $(element).children(".js_item-content").children(".entry-summary").children("p").text();
+			
+			// results.push({
+			// 	title: title,
+			// 	link: link,
+			// 	summary: summary
+			// })
+                //////////
+          
           // articlesArr.push(result);
           // Create a new Article using the `result` object built from scraping
           db.Article.create(result)
@@ -96,13 +121,10 @@ app.get("/articles", function (req, res) {
 });
 
 app.get("/articles/:id", function (req, res) {
-  db.Article.findOne({
-      _id: req.params.id
-    })
+  db.Article.findOne({_id: req.params.id})
     .populate("note")
     .then(function (article) {
-      res,
-      json(article);
+      res.json(article);
     })
     .catch(function (err) {
       res.json(err);
@@ -112,10 +134,9 @@ app.get("/articles/:id", function (req, res) {
 app.post("/articles/:id", function (req, res) {
   db.Note.create(req.body)
     .then(function (note) {
-      return db.Article.findOneAndUpdate({
-        _id: req.params.id
-      }, {
-        $set: {
+      return db.Article.findOneAndUpdate(
+          {_id: req.params.id}, 
+          {$set: {
           note: note._id
         }
       }, {

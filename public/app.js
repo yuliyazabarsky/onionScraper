@@ -16,12 +16,14 @@ $.getJSON("/articles", function(data){
 
         var title = data[i].title;
         var link= data[i].link;
+        var summary=data[i].summary;
 
         $("#articles").append(
             // $('<div class="col-sm">').append(
             // $('<div class="card">').append(
         $("<h5 class='class-title'>").text(title),
-        $("<a class='btn btn-warning'>").text("Read Article").attr("href", link).attr("target", '_blank'), $("<a class='btn btn-warning' id='savearticle'>").text("Save Article").attr("href", "/savearticle") )
+        $("<a class='btn btn-warning'>").text("Read Article").attr("href", link).attr("target", '_blank'), $("<a class='btn btn-warning' id='savearticle'>").text("Save Article").attr("href", "/saved"),
+        $("<p class='entry-summary'>").text(summary).attr("p"))
         
 
         // $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br /" + data[i].link + "</p>";
@@ -51,7 +53,7 @@ $(document).on("click", "p", function(){
     });
 });
 
-$(document).on("click", "#savearticle", function(){
+$(document).on("click", "saved", function(){
     var thisId = $(this).attr("data-id");
 
     //POST request 
@@ -59,11 +61,11 @@ $(document).on("click", "#savearticle", function(){
     $.ajax({
         method: "POST",
         url: "/articles/" + thisId,
-        data: title
-        // data:{
-        //     title: $("#titleinput").val(),
-        //     body: $("#bodyinput").val()
-        // }
+        data: title,
+        data:{
+            title: $("#titleinput").val(),
+            body: $("#bodyinput").val()
+        }
     }).then(function(data){
         console.log(data);
         $("#notes").empty();
