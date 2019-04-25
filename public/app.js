@@ -22,7 +22,7 @@ $.getJSON("/articles", function(data){
             // $('<div class="col-sm">').append(
             // $('<div class="card">').append(
         $("<h5 class='class-title'>").text(title),
-        $("<a class='btn btn-warning'>").text("Read Article").attr("href", link).attr("target", '_blank'), $("<a class='btn btn-warning' id='savearticle'>").text("Save Article").attr("href", "/saved"),
+        $("<a class='btn btn-warning'>").text("Read Article").attr("href", link).attr("target", '_blank'), $("<a class='btn btn-warning ml-2' id='savearticle'>").text("Save Article").attr("href", "/saved"),
         $("<p class='entry-summary'>").text(summary).attr("p"))
         
 

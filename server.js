@@ -14,15 +14,15 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/onionScraper", {
-  useNewUrlParser: true
-});
-// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/onionScraper";
+// mongoose.connect("mongodb://localhost/onionScraper", {
+//   useNewUrlParser: true
+// });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/onionScraper";
 
-// mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI);
 
 
-var PORT = 8080;
+var PORT = process.env.PORT || 8080;
 
 //Routes 
 
